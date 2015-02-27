@@ -242,6 +242,17 @@ public class ForecastFragment extends Fragment {
 
         }
         @Override
+        protected void onPostExecute(String[] result) {
+            if (result != null) {
+                mForecastAdapter.clear();
+                for(String dayForecastStr : result) {
+                    mForecastAdapter.add(dayForecastStr);
+                }
+                // New data is back from the server.  Hooray!
+            }
+        }
+
+        @Override
         protected String[] doInBackground(String... params) {
 
             // If there's no zip code, there's nothing to look up.  Verify size of params.
