@@ -35,8 +35,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -85,11 +83,12 @@ public class ForecastFragment extends Fragment {
 //        }
 
         if (id == R.id.action_refresh) {
-            FetchWeatherTask weatherTask = new FetchWeatherTask();
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String location = prefs.getString(getString(R.string.pref_location_key),
-                    getString(R.string.pref_location_default));
-            weatherTask.execute(location);
+//            FetchWeatherTask weatherTask = new FetchWeatherTask();
+//            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+//            String location = prefs.getString(getString(R.string.pref_location_key),
+//                    getString(R.string.pref_location_default));
+//            weatherTask.execute(location);
+            updateWeather();
             return true;
         }
 
@@ -109,15 +108,15 @@ public class ForecastFragment extends Fragment {
         // Create some dummy data for the ListView.  Here's a sample weekly forecast
         // Mark, 2015-2-27, Taichung:
         // dummy data 是常用的開發方法,先有個東西可以運行,看得到,再一個一個替換
-        String[] data = {
-                "Mon 6/23 - Sunny - 31/17",
-                "Tue 6/24 - Foggy - 21/8",
-                "Wed 6/25 - Cloudy - 22/17",
-                "Thurs 6/26 - Rainy - 18/11",
-                "Fri 6/27 - Foggy - 21/10",
-                "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
-                "Sun 6/29 - Sunny - 20/7"
-        };
+//        String[] data = {
+//                "Mon 6/23 - Sunny - 31/17",
+//                "Tue 6/24 - Foggy - 21/8",
+//                "Wed 6/25 - Cloudy - 22/17",
+//                "Thurs 6/26 - Rainy - 18/11",
+//                "Fri 6/27 - Foggy - 21/10",
+//                "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
+//                "Sun 6/29 - Sunny - 20/7"
+//        };
         // Mark, 2015-2-27, Taichung:
         // ArrayAdapter 要的是List, 通常是使用 ArrayList
         // List 是 interface, ArrayList 是 class
@@ -127,7 +126,7 @@ public class ForecastFragment extends Fragment {
         //      http://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html#jls-8.1.2
         //      http://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html#asList(T...)
         // 以下這個 weekForecast 只用一次,經過理解,可以採匿名方式,直接以Arrays.asList(data) 供 ArrayAdapter 使用
-        List<String> weekForecast = new ArrayList<String>(Arrays.asList(data));
+//        List<String> weekForecast = new ArrayList<String>(Arrays.asList(data));
 
         // 1.05 Create ArrayAdapter
         // Now that we have some dummy forecast data, create an ArrayAdapter.
@@ -138,7 +137,7 @@ public class ForecastFragment extends Fragment {
                         getActivity(), // The current context (this activity)
                         R.layout.list_item_forecast, // The name of the layout ID.
                         R.id.list_item_forecast_textview, // The ID of the textview to populate.
-                        weekForecast);
+                        new ArrayList<String>());
         // ArrayAdpater 有多種 constructor,
         // http://developer.android.com/reference/android/widget/ArrayAdapter.html
         // 這種是: (1)Context (2) Layout (3) TextView (4) List<String>
@@ -167,7 +166,19 @@ public class ForecastFragment extends Fragment {
 
         return rootView;
     }
+    private void updateWeather() {
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = prefs.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+        weatherTask.execute(location);
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateWeather();
+    }
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
