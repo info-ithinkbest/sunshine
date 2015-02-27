@@ -4,7 +4,7 @@
     <string name="action_refresh"  translate="false">更新(僅供開發測試用)</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="title_activity_settings">Settings</string>
-
+    <string name="action_map">Map Location</string>
     <!-- Label for the location preference [CHAR LIMIT=30] -->
     <string name="pref_location_label">Location</string>
 
