@@ -56,6 +56,16 @@ public class ForecastFragment extends Fragment {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
+
+            // 2.05_execute_fetchweathertask
+            // Mark, 2015-2-27,
+            // 以下兩行,是可以合併為一行
+            // 免去了 weatherTask 這個 variable
+//            FetchWeatherTask weatherTask = new FetchWeatherTask();
+//            weatherTask.execute();
+
+            new FetchWeatherTask().execute();
+
             return true;
         }
         return super.onOptionsItemSelected(item);
